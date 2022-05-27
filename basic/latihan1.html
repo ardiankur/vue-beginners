@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Beginners</title>
+    <style>
+        body {
+            margin: 5%;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .active {
+            background: salmon;
+            border: 0;
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+        <header>
+            <img src="image/logo.png" width="80">
+            <!-- Cara render Baru -->
+            <h1 v-text="name.toUpperCase()"></h1>
+
+            <h3>Form Submit</h3>
+            <p><input type="text" placeholder="Nama Kelas" v-on:keyup.enter="submit" v-model="kelasBaru"></p>
+
+            <h3>Daftar Kelas ada {{ kelas.length }}</h3>
+            <template v-if="kelas.length > 1">
+                <ul>
+                    <li v-for="(item, index) of kelas">{{ index+1 }} - {{ item }}</li>
+                </ul>
+            </template>
+            <li v-else>Kelas belum tersedia</li>
+            <p>{{kelas}}</p>
+            <div>
+                <label><input type="checkbox" value="React" v-model="kelas"> React</label>
+                <label><input type="checkbox" value="Vuejs" v-model="kelas"> Vue JS</label>
+                <label><input type="checkbox" value="Angular" v-model="kelas"> Angular</label>
+            </div>
+
+            <h3>Perulangan (1-5)</h3>
+            <ul>
+                <li v-for="x in 5">{{x}}</li>
+            </ul>
+
+            <h3>Mencari Bilangan Genap : {{numbers}}</h3>
+            <ul>
+                <li v-for="x in cariBilanganGenap(numbers)">{{x}}</li>
+            </ul>
+
+            <h1 v-text="bilangan"></h1>
+            <p>Bilangan ini adalah bilangan {{infoBilangan}}</p>
+            <p>
+                <button @click="handleClick()">Ditekan</button>
+            </p>
+            <!-- Untuk directive yg menggunakan atribut html (v-bind) atau : -->
+            <img :src="gambar" width=300>
+            <!-- Cara render Baru -->
+            <!-- <h1 v-html="link"></h1>
+            <h1 v-text="bilangan*2"></h1> -->
+            <!-- Cara render Lawas -->
+            <!-- <h1>{{bilangan}}</h1> -->
+            <!-- v-once = nilai nya tidak bisa diubah -->
+            <!-- <h1 v-once>{{name + ' Xixixi'}}</h1> -->
+            <!-- <h1 v-once>{{name.toUpperCase()}}</h1> -->
+            <!-- <h1 v-once>{{isActive ? 'Success' : 'Danger'}}</h1> -->
+            <p>The Progressive JavaScript Framework</p>
+
+            <!-- Studi Case Class Binding -->
+            <a v-bind:class="{active: menu === 'home'}" href="#" v-on:click.prevent="gantiMenu('home')">Home</a>
+            <a v-bind:class="{active: menu === 'about'}" href="#" v-on:click.prevent="gantiMenu('about')">About</a>
+            <a v-bind:class="{active: menu === 'blog'}" href="#" v-on:click.prevent="gantiMenu('blog')">Blog</a>
+        </header>
+
+        <footer id="footer">
+            <p>copyright 2022</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        // jika data dipisah
+        // const member = {
+        //     // string, number, boolean, array, object
+        //     name: 'Doremi Fasilasido',
+        //     message: "Hello World!",
+        //     isActive: true
+        // }
+
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                // string, number, boolean, array, object
+                name: 'Doremi Fasilasido',
+                message: "Hello World!",
+                qty: 3,
+                namaDepan: 'Ardian',
+                namaBelakang: ' Kurniawan',
+                bilangan: 1,
+                link: '<a href="">Kelas Baledemy</a>',
+                gambar: 'image/new.png',
+                menu: 'home',
+                kelas: ['Golang', 'PHP'],
+                numbers: [1, 2, 3, 4, 5],
+                kelasBaru: "",
+                isActive: true
+            },
+            methods: {
+                getName: function () {
+                    return 'Hello, ' + this.name
+                },
+                ubahNama: function (namaBaru) {
+                    this.name = namaBaru
+                    // return this.getName()
+                },
+                handleClick: function () {
+                    this.bilangan++
+                    this.gambar = 'image/react.png'
+                },
+                cariBilanganGenap: (data) => {
+                    return data.filter(angka => {
+                        return angka % 2 == 0
+                    })
+                },
+                gantiMenu: function (data) {
+                    this.menu = data
+                },
+                submit: function () {
+                    this.kelas.unshift(text)
+                    this.kelasBaru = ""
+                }
+            },
+            computed: {
+                totalBayar: function () {
+                    return this.qty * 10000
+                },
+                namaLengkap: function () {
+                    return this.namaDepan + this.namaBelakang
+                },
+                infoBilangan: function () {
+                    return this.bilangan % 2 === 0 ? 'Genap' : 'Ganjil'
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
