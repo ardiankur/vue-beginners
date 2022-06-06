@@ -1,2 +1,4 @@
-# vue-beginners
-Coba vue pemula ygy
+# CRUD VueJS v2 with Local Storage
+
+Run Program =>
+php -S localhost:8000
