@@ -54,6 +54,7 @@
     <script src="https://unpkg.com/vue-router@2.0.0/dist/vue-router.js"></script>
     <script src="https://unpkg.com/uuid@latest/dist/umd/uuidv4.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
     <script>
         const Home = {
             template: '<div>Home</div>'
@@ -65,6 +66,34 @@
 
         const NotFound = {
             template: '<div>Halaman Tidak Ditemukan</div>'
+        }
+
+        const detailKelas = {
+            template: `<div>
+                    <img :src="url_gambar(detailkelas.gambar)" width="150" />
+                    <h3>{{ detailkelas.judul }} - {{ $route.params.idkelas }}</h3>
+                    <p>{{ detailkelas.deskripsi }}</p>
+                    <router-link to="/kelas">Kembali</router-link>
+                </div>`,
+            data() {
+                return {
+                    detailKelas: {}
+                }
+            },
+            created() {
+                this.filterkelas()
+            },
+            methods: {
+                filterkelas() {
+                    let kelas = JSON.parse(localStorage.getItem('kelas'))
+                    let id = this.$route.params.idkelas
+                    let item = kelas.filter(k => k.id == id)
+                    this.detailkelas = item[0]
+                },
+                url_gambar: function (gambar) {
+                    return '../image/' + gambar
+                }
+            }
         }
 
         const Kelas = {
@@ -102,6 +131,7 @@
                                 <p>
                                     {{ index+1 }} - {{ item.judul }}
                                     <a href="" v-on:click.prevent="$emit('hapuskelas', item.id)">hapus</a>
+                                    <router-link :to="'/kelas/' +item.id">Lihat kelas</router-link>
                                 </p>
                             </li>
                         </ul>
@@ -155,7 +185,9 @@
                     const namagambar = (event.target.files[0].name)
                     this.kelas.gambar = namagambar
                     this.previewimg = URL.createObjectURL(event.target.files[0])
-
+                },
+                url_gambar: function (gambar) {
+                    return 'image/' + gambar
                 }
             }
         }
@@ -200,6 +232,10 @@
                 component: Kelas
             },
             {
+                path: '/kelas/:idkelas',
+                component: detailKelas
+            },
+            {
                 path: '*',
                 component: NotFound
             }
@@ -211,7 +247,6 @@
         })
 
         const vm = new Vue({
-            el: '#app',
             router,
             components: {
                 'home': Home
@@ -240,7 +275,27 @@
                 kelas: []
             },
             created() {
-                this.kelas = JSON.parse(localStorage.getItem('kelas')) || []
+                // kelasRef.on('value', this.resultData, this.errorData)
+            },
+            beforeCreate() {
+                console.log('before-create')
+            },
+            mounted() {
+                console.log('mounted')
+            },
+            beforeUpdate() {
+                console.log('before-update')
+            },
+            updated() {
+                console.log('updated')
+            },
+            methods: {
+                resultData(items) {
+                    console.log(items.val())
+                },
+                errorData(error) {
+                    console.log(error)
+                }
             },
             methods: {
                 hapuskelas: function (id) {
@@ -267,6 +322,8 @@
 
             }
         })
+
+        vm.$mount('#app')
     </script>
 </body>
 
