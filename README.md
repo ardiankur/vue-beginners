@@ -3,6 +3,6 @@
 **Run Program** =>
 php -S localhost:8000
 
-**Upload Image**
+**Upload Image** =>
 In folder image, if you want to upload from another directory, 
 please change the code swap directory first
